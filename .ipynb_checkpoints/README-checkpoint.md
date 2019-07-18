@@ -5,8 +5,110 @@
   
 * 第一个心得，`markdwn`实现段首缩进的方法：`Shift` + `Space`切换成全角输入模式，然后输入两个空格
 
-> I will try my best to update it!
+> I will try my best to update it !
 
-## Part 1 : Query 查询
+## Part 1 : Easy Query 简单查询
 
-* 基本语句：`SELECT` * `FROM` table `WHERE` conditions ` 
+* 基本语句
+    - `SELECT` * 
+    - `FROM` table 
+    - `WHERE` condition 1
+        - `AND`/`OR` condition 2
+    
+* 心得：
+    1. select * 的意思是选择所有columns,如果要选择有限的column，需要用“，”分隔  
+    2. Where conditions 可以用“AND”或“OR”组合连接
+
+### 针对数值的操作：
+
+| 操作 | 说明 | 举例 |
+| :-: | :-: | :-: |
+| =,!=,<,<=,>,>= | 数值比较 | col **!=** 5 |
+| BETWEEN...AND... | 与 $ \geq x \leq$ 类似| col **BETWEEN** 5 **AND** 10|
+| NOT BETWEEN...AND... | 上一句的补集 | col **NOT BETWEEN** 5 **AND** 10 |
+| IN(...) | 在括号中的数 | col **IN**(5,10)|
+| NOT IN(...) | 不在括号中的数 | col **NOT IN**(5,10) |
+
+* **(语句关键词大写是良好习惯，为了与表中的数据区分，但是不大写也行)**
+
+### 针对字符串的操作：
+
+| 操作 | 说明 | 举例 |
+| :-: | :-: | :-: |
+| = | 严格相等 | col **=** "Car" |
+| != or <> | 不相等 | col **!=** "Car" |
+| LIKE | 与 = 作用相同 | col **LIKE** "Car" |
+| NOT LIKE | 与 != 作用相同 | col **NOT LIKE** "Car"|
+| % | 匹配任意字符串，只能与 LIKE 与NOT LIKE 连用 | col **LIKE** "%A%"(返回 ARE,CA,CAR,CARE)|
+| _ | 匹配任意一个字符，只能与 LIKE 与 NOT LIKE 连用 | col **LIKE** "CA_"(返回 CAR 而没有 CA ) |
+| IN(...) | 在括号中的文本 | col **IN**("C","A","R")|
+| NOT IN(...) | 不在括号中的文本 | col **NOT IN**("C","A","R") |
+
+## Part 2 : Filtering And Sorting Query 过滤与排序
+
+* 基本语句
+    - `SELECT` **DISTINCT** col, col... 
+    - `FROM` table 
+    - `WHERE` condition 1
+        - `AND`/`OR` condition 2
+    - `GROUP BY` 1Key, 2Key
+    - `ORDER BY` 1Key, 2Key `ASC`/`DESC`
+        - `LIMIT` num_limit
+        - `OFFSET` num_offset
+* 心得：
+    1. SELECT DISTINCE col,... 查询的结果是col中不重复的items
+    2. GROUP BY 与 ORDER BY 必须在 WHERE 之后
+    3. GROUP BY 的作用是按照关键字分组显示结果，关键字有主次之分
+    4. ORDER BY 的子命令
+        * ASC 默认升序ascend
+        * DESC 降序 descend
+        * LIMIT 5 限制结果显示项目的条数为5
+        * OFFSET 10 限制结果从第11条开始显示
+
+## Part 3：Multi-Table Query 多表连接
+
+* 基本语句
+    - `SELECT` * 
+    - `FROM` table1
+        - `LEFT`/`INNER`/`RIGHT`/`FULL JOIN` table2
+        - `ON` table1.id = table2.id
+    - `WHERE` condition 1
+        - `AND`/`OR` condition 2
+    - `GROUP BY` 1Key, 2Key
+    - `ORDER BY` 1Key, 2Key `ASC`/`DESC`
+        - `LIMIT` num_limit
+        - `OFFSET` num_offset
+* 心得：
+    1. FROM 的子语句 JOIN 省略前面的语句则默认是 INNER 
+    2. LEFT 会包含 table1 中的所有内容和 table2 中 table2.id 中与 table1.id 重合的部分
+    3. INNER 会包含 table1 与 table2 中 id 重合的部分
+    4. RIGHT 会包含 table2 中的所有内容和 table1 中 table1.id 中与 table2.id 重合的部分
+    5. FULL 会保留 table1 与 table2 的所有信息
+    6. LEFT， RIGHT， Full 的结果会含有 NULL值，而 INNER 的结果不会含 NULL 值
+
+### 对 NULL 的处理
+在`WHERE`的 condition 中队 NULL 进行处理
+
+| 操作 | 说明 | 举例 |
+| :-: | :-: | :-: |
+| IS NULL | 返回 col 为 NULL 的结果 | **WHERE** col **IS NULL** |
+| IS NOT NULL | 返回 col 不为 NULL 的结果| **WHERE** col **IS NOT NULL**|
+
+## Part 4：Query with Expressions 表达式查询
+
+* 基本语句
+    - `SELECT` **expressions1** `AS` NewCol
+    - `FROM` table1
+        - `LEFT`/`INNER`/`RIGHT`/`FULL JOIN` table2
+        - `ON` table1.id = table2.id
+    - `WHERE` **expressions2**
+        - `AND`/`OR` **expressions3**
+    - `GROUP BY` 1Key, 2Key
+    - `ORDER BY` 1Key, 2Key `ASC`/`DESC`
+        - `LIMIT` num_limit
+        - `OFFSET` num_offset
+* 心得：
+    1. **expressions** 可以在 SELECT 与 WHERE 中出现
+    2. SELECT 后接能够直接计算的表达式，如 col * 5
+    3. SELECT **expressions** AS NewCol 可以把 **expressions** 生成 NewCol
+    4. WHERE 接条件表达式，如 col % 2 = 0 (col 是偶数)
