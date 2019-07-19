@@ -1,4 +1,5 @@
 # SQLEasy
+
 * This is a note of  Mr.Car to learn SQL as soon as possible  
 
 　　做数据分析需要用到SQL这个有力工具，但是我苦于从没有接触过，而且想尽量快地上手此工具，在B站SQL金老师的视频中发现了`sql.com`这款在线练习神器，于是我就想写一份学习笔记，记录一下SQL工具的常见命令和心得。 
@@ -235,6 +236,7 @@
 | **FOREIGN KEY** | 与其他表中的 col 关联 |
 
 ### eg：
+
 ```SQL
 CREATE TABLE movies (
     id INTEGER PRIMARY KEY,
@@ -244,3 +246,37 @@ CREATE TABLE movies (
     length_minutes INTEGER
 );
 ```
+## Part 11：Altering Tables 添加修改列
+
+* 添加列语句
+    - `ALTER TABLE` table
+    - `ADD` col **DataType** **OptionalTableConstraint**
+        - `DEFAULT` default_value
+
+* 移除列语句
+    - `ALTER TABLE` table
+    - `DROP` col 
+
+* 修改表名语句
+    - `ALTER TABLE` table
+    - `RENAME TO` new_table_name
+* 心得：
+    1. 每一种数据库的修改 table 操作语句都有细微差别，所以要根据数据库类型并参考官方文档
+        * [MySOL](https://dev.mysql.com/doc/refman/5.6/en/alter-table.html)
+        * [PostgreSQL](https://www.postgresql.org/docs/9.4/sql-altertable.html)
+        * [SQLite](https://www.sqlite.org/lang_altertable.html)
+        * [Microsoft SQL Sever](https://docs.microsoft.com/en-us/sql/t-sql/statements/alter-table-transact-sql?view=sql-server-2017)
+        
+## Part 18：Dropping Tables 删除列表
+
+* 操作语句
+    - `DROP TABLE IF EXISTS` table
+
+* 心得：
+    1. 慎重操作！！！
+
+# 暂时告一段落~
+
+　　SQLEasy 学习笔记到此就已经告一段落了，总结一下，我学习并汇总了 SQL 的 SELECT 系列操作，包括 JOIN， WHERE，GROUP BY，ORDER BY 等限制条件的使用；还学习了 expression 的一些表示方法， aggregate 函数的使用，以及各语句的执行顺序；在查询部分的基础上，又在 Table 层次学习了 SQL 操作指令，包括对 raws 的操作：INSERT INTO，UPDATE， DELETE FROM；对 columns 的操作：ALTER TABLE ADD 与 DROP；以及对 table 的操作 ALTER TABLE RENAME TO 和 CREARE TABLE
+  
+　　我所有的学习资料均来自于 [SQLbolt.com](https://sqlbolt.com/)感谢这个优秀的网站作者，本文也参考了网站上的课程顺序，并加入了自己的一些学习心得，希望可以作为一份手边笔记，经常查看。SQL许多高级操作如多表关联查询，嵌套查询本文并未涉及，日后接触到再做补充，SQLEasy 是我的一个 Github 项目，目的是记录自己的学习轨迹并且帮助像我一样想在短期大致了解这项技术的人，代码库在[这里](https://github.com/MrCare/SQLEasy)，欢迎小伙伴们一起补充！
