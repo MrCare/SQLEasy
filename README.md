@@ -112,3 +112,135 @@
     2. SELECT 后接能够直接计算的表达式，如 col * 5
     3. SELECT **expressions** AS NewCol 可以把 **expressions** 生成 NewCol
     4. WHERE 接条件表达式，如 col % 2 = 0 (col 是偶数)
+
+## Part 5：Query with Aggregates 统计查询
+
+* 基本语句
+    - `SELECT` **AGG_FUNC(col_or_expression)** `AS` NewCol
+    - `FROM` table1
+        - `LEFT`/`INNER`/`RIGHT`/`FULL JOIN` table2
+        - `ON` table1.id = table2.id
+    - `WHERE` condition1
+        - `AND`/`OR` condition2
+    - `GROUP BY` 1Key, 2Key
+        - `HAVING` **group-condition**
+    - `ORDER BY` 1Key, 2Key `ASC`/`DESC`
+        - `LIMIT` num_limit
+        - `OFFSET` num_offset
+
+* 心得：
+    1. 若没有 GROUP BY 语句时，每一个 AGG_FUNC() 会在整个表的集合里运行
+    2. 当 GROUP BY 之后，AGG_FUNC() 会在 group 运行
+    3. GROUP BY 的子语句 HAVING 与 WHERE 用法相同，只不过是用于限制 group 的条件
+    4. 如果不用 GROUP BY 语句，简单的 WHERE 就可以满足需求了
+
+### 常见统计函数
+
+| 函数 | 说明 |
+| :-: | :-: |
+| **COUNT( * )**,<br>**COUNT(col)** | 返回组内 col 非 NULL 行的个数，如果没有col则返回组内 item 的个数 |
+| **MIN(col)** | 返回最小值 |
+| **MAX(col)** | 返回最大值 |
+| **AVG(col)** | 返回平均值 |
+| **SUM(col)** | 返回所有数值的加和 |
+
+## Part 6：Order of Execution 执行顺序
+
+* 完整语句
+    - `SELECT` `DISTINCET` col, AGG_FUNC(col_or_expression), ...
+    - `FROM` table1
+        - `LEFT`/`INNER`/`RIGHT`/`FULL JOIN` table2
+        - `ON` table1.id = table2.id
+    - `WHERE` condition1
+        - `AND`/`OR` condition2
+    - `GROUP BY` 1Key, 2Key
+        - `HAVING` group-condition
+    - `ORDER BY` 1Key, 2Key `ASC`/`DESC`
+        - `LIMIT` num_limit
+        - `OFFSET` num_offset
+
+### 执行顺序
+
+| 语句 | 次序 |
+| :-: | :-: |
+| **FROM** and **JOIN** | 0 |
+| **WHERE** | 1 |
+| **GROUP BY** | 2 |
+| **HAVING** | 3 |
+| **SELECT** | 4 |
+| **DISTINCE** | 5 |
+| **ORDER BY** | 6 |
+| **LIMIT** or **OFFSET** |7|
+
+## Part 7：Insert Rows 向表中插入新  Item
+
+* 完整语句
+    - `INSERT INTO` table (col1, col2, ...) **VALUES** (value1, value2, ...)
+
+* 心得：
+    1. INSERT INTO 是一条语句，后面的以空格分隔
+    2. 要注意 VALUES 的格式，数值 or 字符串
+
+## Part 8：Update Rows 更新 Item
+
+* 完整语句
+    - `UPDATE` table
+    - `SET` col1 = value1, col2 = value2, ...
+    - `WHERE` condition
+
+* 心得：
+    1. 使用时需要先用 SELECT 检验一下 WHERE 条件是否正确
+
+## Part 9：Delete Rows 删除 Item
+
+* 完整语句
+    - `DELETE FROM` table
+    - `WHERE` condition
+
+* 心得：
+    1. 使用时需要先用 SELECT 检验一下 WHERE 条件是否正确
+    
+## Part 10：Creatng Tables 创建新表
+
+* 完整语句
+    - `CREATE TABLE` `IF NOT EXISTS` table (
+        - col **DataType TableConstraint** **DEFAULT** default_value, 
+        - another_col **DataType** TableConstraint **DEFAULT** default_value, ...)
+
+* 心得：
+    1. IF NOT EXISTS 语句的作用是将表名重复的 ERROR 改成 WARNINGS ,但是如果重名还是不能创建表格
+    2. 将 SELECT 的结果创建成新表
+        * `SELECT INTO` NewTable
+        * `FROM` OldTable
+        
+### DataType
+
+| DataType | 解释 |
+| :-: | :-: |
+| **INTEGER, BOOLEAN** | 整型，布尔型（以0，1表示） |
+| **FLOAT, DOUBLE, REAL** | 浮点型，双精度， |
+| **CHARACTER(num_chars), VARCHAR(num_chars), TEXT** | 字符型 |
+| **DATE, DATETIME** | 日期型 |
+| **BLOB** | 二进制 |
+
+### Table Constraints
+
+| Constraint | 解释 |
+| :-: | :-: |
+| **PRIMARY KEY** | col 的值不可重复不可为 NULL |
+| **AUTOINCREMENT** | 对于整数型的数值自动升序排列 |
+| **UNIQUE** | col 的值不可重复 |
+| **NOT NULL** | col 的值不可为 NULL |
+| **CHEAK(expression)** | 通过条件检查 col |
+| **FOREIGN KEY** | 与其他表中的 col 关联 |
+
+### eg：
+```SQL
+CREATE TABLE movies (
+    id INTEGER PRIMARY KEY,
+    title TEXT,
+    director TEXT,
+    year INTEGER, 
+    length_minutes INTEGER
+);
+```
