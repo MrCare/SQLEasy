@@ -148,7 +148,7 @@
 ## Part 6：Order of Execution 执行顺序
 
 * 完整语句
-    - `SELECT` `DISTINCET` col, AGG_FUNC(col_or_expression), ...
+    - `SELECT` `DISTINCT` col, AGG_FUNC(col_or_expression), ...
     - `FROM` table1
         - `LEFT`/`INNER`/`RIGHT`/`FULL JOIN` table2
         - `ON` table1.id = table2.id
@@ -169,7 +169,7 @@
 | **GROUP BY** | 2 |
 | **HAVING** | 3 |
 | **SELECT** | 4 |
-| **DISTINCE** | 5 |
+| **DISTINCT** | 5 |
 | **ORDER BY** | 6 |
 | **LIMIT** or **OFFSET** |7|
 
@@ -277,6 +277,6 @@ CREATE TABLE movies (
 
 # 暂时告一段落~
 
-　　SQLEasy 学习笔记到此就已经告一段落了，总结一下，我学习并汇总了 SQL 的 SELECT 系列操作，包括 JOIN， WHERE，GROUP BY，ORDER BY 等限制条件的使用；还学习了 expression 的一些表示方法， aggregate 函数的使用，以及各语句的执行顺序；在查询部分的基础上，又在 Table 层次学习了 SQL 操作指令，包括对 raws 的操作：INSERT INTO，UPDATE， DELETE FROM；对 columns 的操作：ALTER TABLE ADD 与 DROP；以及对 table 的操作 ALTER TABLE RENAME TO 和 CREARE TABLE
+　　&emsp; &emsp; SQLEasy 学习笔记到此就已经告一段落了，总结一下，我学习并汇总了 SQL 的 SELECT 系列操作，包括 JOIN， WHERE，GROUP BY，ORDER BY 等限制条件的使用；还学习了 expression 的一些表示方法， aggregate 函数的使用，以及各语句的执行顺序；在查询部分的基础上，又在 Table 层次学习了 SQL 操作指令，包括对 raws 的操作：INSERT INTO，UPDATE， DELETE FROM；对 columns 的操作：ALTER TABLE ADD 与 DROP；以及对 table 的操作 ALTER TABLE RENAME TO 和 CREARE TABLE
   
-　　我所有的学习资料均来自于 [SQLbolt.com](https://sqlbolt.com/)感谢这个优秀的网站作者，本文也参考了网站上的课程顺序，并加入了自己的一些学习心得，希望可以作为一份手边笔记，经常查看。SQL许多高级操作如多表关联查询，嵌套查询本文并未涉及，日后接触到再做补充，SQLEasy 是我的一个 Github 项目，目的是记录自己的学习轨迹并且帮助像我一样想在短期大致了解这项技术的人，代码库在[这里](https://github.com/MrCare/SQLEasy)，欢迎小伙伴们一起补充！
+　　&emsp; &emsp; 我所有的学习资料均来自于 [SQLbolt.com](https://sqlbolt.com/)感谢这个优秀的网站作者，本文也参考了网站上的课程顺序，并加入了自己的一些学习心得，希望可以作为一份手边笔记，经常查看。SQL许多高级操作如多表关联查询，嵌套查询本文并未涉及，日后接触到再做补充，SQLEasy 是我的一个 Github 项目，目的是记录自己的学习轨迹并且帮助像我一样想在短期大致了解这项技术的人，代码库在[这里](https://github.com/MrCare/SQLEasy)，欢迎小伙伴们一起补充！
